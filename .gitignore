@@ -1,0 +1,24 @@
+# Credenciales y configuracion local
+.env
+*.env
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Power BI (cache local del proyecto .pbip)
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+
+# Volumenes de Docker
+pgdata/
+grafana-data/
+
+# Sistema y editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
