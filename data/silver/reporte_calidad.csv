@@ -1,0 +1,7 @@
+metrica,valor
+filas_leidas,884.0
+rechazadas_duplicado,20.0
+rechazadas_faltante,17.0
+rechazadas_fuera_de_rango,15.0
+filas_validas,832.0
+pct_datos_validos,94.12
