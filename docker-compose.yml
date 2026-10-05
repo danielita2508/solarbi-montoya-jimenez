@@ -1,0 +1,31 @@
+# PostgreSQL y Grafana OSS para la practica. Las credenciales salen del archivo .env.
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ${PGDATABASE}
+      POSTGRES_USER: ${PGUSER}
+      POSTGRES_PASSWORD: ${PGPASSWORD}
+    ports:
+      - "${PGPORT:-5433}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  grafana:
+    image: grafana/grafana-oss:latest
+    environment:
+      PGDATABASE: ${PGDATABASE}
+      PGUSER: ${PGUSER}
+      PGPASSWORD: ${PGPASSWORD}
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboard.json:/etc/grafana/dashboards/dashboard.json:ro
+    depends_on:
+      - postgres
+
+volumes:
+  pgdata:
+  grafana-data:
