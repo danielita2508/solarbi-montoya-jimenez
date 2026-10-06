@@ -6,8 +6,8 @@
 
 | Nombre completo | Usuario de GitHub |
 |---|---|
-| _Nombre completo integrante 1_ | @danielita2508 |
-| _Nombre completo integrante 2_ | _@usuario_ |
+| Daniela Montoya Quintero | @danielita2508 |
+| Isaac Madera Jiménez | @IsaVonxz-type |
 
 **Curso:** Inteligencia de Negocios · Grupo 50 · Semestre 2026-II
 **Docente:** Ramiro Grisales Montoya
