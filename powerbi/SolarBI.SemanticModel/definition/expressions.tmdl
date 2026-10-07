@@ -1,0 +1,10 @@
+expression Servidor = "localhost:5433" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 340e0624-12cf-4096-af25-842c41e03471
+
+	annotation PBI_ResultType = Text
+
+expression BaseDatos = "solarbi" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: f7f873bb-adf6-4a56-8f7a-ecadb667ffe7
+
+	annotation PBI_ResultType = Text
+

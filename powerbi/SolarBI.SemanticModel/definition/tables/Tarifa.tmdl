@@ -1,0 +1,20 @@
+table Tarifa
+	lineageTag: b5e337e1-b532-4c53-b484-e44e4e729366
+
+	measure 'Tarifa Valor' = COALESCE ( SELECTEDVALUE ( Tarifa[Tarifa] ), 958.38 )
+		formatString: #,0.00
+		lineageTag: 36823208-12ad-40bc-b582-30efc832fe55
+
+	column Tarifa
+		dataType: int64
+		formatString: 0
+		lineageTag: c8f37d22-0034-4780-b8b7-9b1b2697b29d
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		changedProperty = Name
+
+	partition Tarifa = calculated
+		mode: import
+		source = GENERATESERIES ( 0, 2000, 10 )
+

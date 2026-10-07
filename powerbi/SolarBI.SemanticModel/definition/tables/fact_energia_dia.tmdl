@@ -1,0 +1,97 @@
+table fact_energia_dia
+	lineageTag: a62bfc0c-b71c-402e-a7dd-278b4fc7d457
+
+	measure 'Energía kWh' = SUM ( fact_energia_dia[energia_kwh] )
+		formatString: #,0.000
+		lineageTag: a6055aed-cf59-4d7e-85c4-c9e86f235d2a
+
+	measure 'Yield kWh/kWp' = DIVIDE ( [Energía kWh], [Potencia instalada kWp] )
+		formatString: 0.00
+		lineageTag: bbe640d4-e377-4ca8-9adc-61cebe6fa824
+
+	measure 'Ahorro COP' = [Energía kWh] * [Tarifa Valor]
+		formatString: #,0
+		lineageTag: 2abb84ca-4237-4303-a3f7-02204a61e430
+
+	measure '% Datos válidos' =
+			DIVIDE (
+			    SUM ( fact_energia_dia[lecturas_validas] ),
+			    SUM ( fact_energia_dia[lecturas_leidas] )
+			)
+		formatString: 0.00%
+		lineageTag: af080e60-d050-4164-96be-7ac725de0a52
+
+	column fecha_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 9d6e50b6-aedd-409e-bf5d-8e8341b1445b
+		summarizeBy: sum
+		sourceColumn: fecha_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column dispositivo_key
+		dataType: int64
+		formatString: 0
+		lineageTag: fec47b3a-ec0a-4441-b34d-91e8b997f13f
+		summarizeBy: none
+		sourceColumn: dispositivo_key
+
+	column fecha
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 0c3d7af6-03f8-4e45-a68e-84ad1fbaf6ec
+		summarizeBy: none
+		sourceColumn: fecha
+
+		variation Variación
+			isDefault
+			relationship: 7a9f44ac-7349-4a50-bd53-932b5668a4de
+			defaultHierarchy: LocalDateTable_c8098037-e5d3-4004-b5a0-6503b352f2e5.'Jerarquía de fechas'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column energia_kwh
+		dataType: double
+		lineageTag: a583cc23-d130-4ba5-be2b-bed46dba4280
+		summarizeBy: sum
+		sourceColumn: energia_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+	column lecturas_leidas
+		dataType: int64
+		formatString: 0
+		lineageTag: dcce93d9-1e81-45d4-a761-51b286fbc0c3
+		summarizeBy: sum
+		sourceColumn: lecturas_leidas
+
+		annotation SummarizationSetBy = Automatic
+
+	column lecturas_validas
+		dataType: int64
+		formatString: 0
+		lineageTag: a67e53c1-d1a8-4b1d-ae74-464153170374
+		summarizeBy: sum
+		sourceColumn: lecturas_validas
+
+		annotation SummarizationSetBy = Automatic
+
+	column pct_datos_validos
+		dataType: double
+		lineageTag: 00d85c96-5bec-43e1-9ef3-0dc9c93dc739
+		summarizeBy: sum
+		sourceColumn: pct_datos_validos
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_energia_dia = m
+		mode: import
+		source =
+				let
+				    Origen = PostgreSQL.Database(Servidor, BaseDatos),
+				    Tabla = Origen{[Schema = "dwh", Item = "fact_energia_dia"]}[Data],
+				    Tipos = Table.TransformColumnTypes(Tabla, {{"fecha_key", Int64.Type}, {"dispositivo_key", Int64.Type}, {"fecha", type date}, {"energia_kwh", type number}, {"lecturas_leidas", Int64.Type}, {"lecturas_validas", Int64.Type}, {"pct_datos_validos", type number}})
+				in
+				    Tipos
+

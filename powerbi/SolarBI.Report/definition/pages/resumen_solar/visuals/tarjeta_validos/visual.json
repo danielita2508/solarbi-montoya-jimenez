@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "tarjeta_validos",
+  "position": {
+    "x": 640,
+    "y": 40,
+    "z": 2,
+    "height": 140,
+    "width": 280,
+    "tabOrder": 2
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_energia_dia"
+                    }
+                  },
+                  "Property": "% Datos válidos"
+                }
+              },
+              "queryRef": "fact_energia_dia.% Datos válidos",
+              "nativeQueryRef": "% Datos válidos"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

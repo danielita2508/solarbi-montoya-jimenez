@@ -1,0 +1,38 @@
+table dim_dispositivo
+	lineageTag: 6dedc06a-24e1-4cd9-b6b2-b827043f31ac
+
+	measure 'Potencia instalada kWp' = SUM ( dim_dispositivo[potencia_kwp] )
+		formatString: 0.00
+		lineageTag: d99f0a52-bfba-402a-b09c-b53c00d58668
+
+	column dispositivo_key
+		dataType: int64
+		formatString: 0
+		lineageTag: ce0f8877-471c-404d-8475-9952614aec6e
+		summarizeBy: none
+		sourceColumn: dispositivo_key
+
+	column nombre
+		dataType: string
+		lineageTag: 087cfb25-2f6e-4e1d-8831-cf20bc9e0caa
+		summarizeBy: none
+		sourceColumn: nombre
+
+	column potencia_kwp
+		dataType: double
+		lineageTag: 17388c7c-d2d9-430d-b38d-cf419cb43bfa
+		summarizeBy: none
+		sourceColumn: potencia_kwp
+
+	partition dim_dispositivo = m
+		mode: import
+		source =
+				let
+				    Origen = PostgreSQL.Database(Servidor, BaseDatos),
+				    Tabla = Origen{[Schema = "dwh", Item = "dim_dispositivo"]}[Data],
+				    Tipos = Table.TransformColumnTypes(Tabla, {{"dispositivo_key", Int64.Type}, {"nombre", type text}, {"potencia_kwp", type number}})
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table
+

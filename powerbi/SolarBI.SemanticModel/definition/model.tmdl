@@ -1,0 +1,21 @@
+model Model
+	culture: es-ES
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: es-ES
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["fact_energia_dia","dim_dispositivo","Servidor","BaseDatos"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table fact_energia_dia
+ref table dim_dispositivo
+ref table Tarifa
+ref table DateTableTemplate_82a4dbb1-8073-473e-9b12-d2a8d0926779
+ref table LocalDateTable_c8098037-e5d3-4004-b5a0-6503b352f2e5
+

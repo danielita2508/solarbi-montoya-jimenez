@@ -1,0 +1,9 @@
+relationship fact_energia_dia_dim_dispositivo
+	fromColumn: fact_energia_dia.dispositivo_key
+	toColumn: dim_dispositivo.dispositivo_key
+
+relationship 7a9f44ac-7349-4a50-bd53-932b5668a4de
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_energia_dia.fecha
+	toColumn: LocalDateTable_c8098037-e5d3-4004-b5a0-6503b352f2e5.Date
+
