@@ -19,6 +19,10 @@ la tabla `Tarifa` y la medida `Tarifa Valor`.
 **La tarifa debe tener fuente citada en el PDF** (por ejemplo, la tarifa publicada por el
 comercializador de energía de la zona, con fecha de consulta). No usar un valor sin referencia.
 
+Valor inicial: **958,38 COP/kWh**, costo unitario de EPM para estrato 4 en Nivel I, propiedad EPM,
+septiembre de 2026 (referencia 23 de `docs/parte_a.md`, consultada el 6 de octubre de 2026). Con ese
+valor, 80,055 kWh dan un ahorro de referencia de 76.723 COP.
+
 ## Medidas
 
 ```DAX
@@ -49,6 +53,14 @@ DIVIDE (
 
 Valores de referencia con los datos actuales (3 días, 5 kWp): energía 80,055 kWh, yield 16,01
 kWh/kWp, % válidos 94,12 %. Si Power BI muestra otra cosa, hay que revisar la relación.
+
+## Proyecto incluido
+
+`SolarBI.pbip` ya trae el modelo (tablas, relación, parámetro `Tarifa` y las medidas de arriba) y una
+página con tarjetas de yield, ahorro y % de datos válidos, el segmentador de tarifa y las columnas de
+energía diaria. Abrirlo con doble clic en Power BI Desktop, poner la contraseña de `PGPASSWORD` (archivo
+`.env`) cuando la pida y pulsar Actualizar. El servidor y la base están en los parámetros `Servidor` y
+`BaseDatos` (Transformar datos → Administrar parámetros).
 
 ## Guardado
 
