@@ -100,4 +100,8 @@ Expresión cron para lanzar el flujo todos los días a la medianoche:
 
 | Tarea | Responsable |
 |---|---|
-| _Por completar_ | _Por completar_ |
+| Simulador, ETL con reglas de calidad y carga idempotente, esquemas SQL | Daniela Montoya Quintero |
+| `docker-compose.yml`, dashboard de Grafana, README inicial y medidas DAX documentadas | Daniela Montoya Quintero |
+| Proyecto de Power BI (`.pbip`) con modelo, medidas y página de resumen | Isaac Madera Jiménez |
+| Respuestas de la Parte A y referencias, incluida la tarifa de EPM | Isaac Madera Jiménez |
+| Capturas de evidencia, reflexión y PDF de la consulta | Isaac Madera Jiménez |
