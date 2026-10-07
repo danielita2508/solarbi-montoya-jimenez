@@ -43,7 +43,9 @@ Requisitos: Python 3.10 o superior y Docker Desktop (o un PostgreSQL y un Grafan
    cp .env.example .env
    ```
 
-   Editar `.env` y poner una contraseña propia. Este archivo no se sube al repositorio.
+   Editar `.env` y poner una contraseña propia en `PGPASSWORD`. El usuario y la base ya vienen en
+   el ejemplo (`solarbi`). Este archivo no se sube al repositorio y de dónde sale cada valor se
+   explica en [Usuarios y contraseñas](#usuarios-y-contraseñas).
 
 2. Instalar las dependencias de Python:
 
@@ -70,10 +72,44 @@ Requisitos: Python 3.10 o superior y Docker Desktop (o un PostgreSQL y un Grafan
 5. Ejecutarlo de nuevo: los conteos deben ser los mismos (carga idempotente). También se pueden
    consultar con `sql/02_verificacion.sql`.
 
-6. Power BI: abrir el archivo de `powerbi/` y, si hace falta, cambiar el servidor a `localhost:5433`.
+6. Power BI: abrir `powerbi/SolarBI.pbip` con Power BI Desktop (requiere activar en Opciones →
+   Características de vista previa la opción de guardar con formato de proyecto de Power BI). Cuando
+   pida credenciales de la base de datos PostgreSQL, usar `PGUSER` y `PGPASSWORD` del `.env`. Si
+   hace falta, cambiar el servidor y la base en los parámetros `Servidor` y `BaseDatos`
+   (`localhost:5433` y `solarbi` por defecto).
 
-7. Grafana: entrar a <http://localhost:3000>, agregar PostgreSQL como data source (host
-   `postgres:5432` si se usa Docker Compose) e importar `grafana/dashboard.json`.
+7. Grafana: entrar a <http://localhost:3000>. El data source de PostgreSQL y el dashboard
+   `grafana/dashboard.json` se cargan solos al levantar Docker Compose (provisioning), con el
+   usuario y la contraseña del `.env`. Los datos de ejemplo están entre el 5 y el 7 de octubre de
+   2026, así que hay que ajustar el rango de tiempo del dashboard a esas fechas.
+
+## Usuarios y contraseñas
+
+El repositorio no trae ninguna contraseña: cada persona las define en su archivo `.env`, que se crea
+copiando `.env.example` y no se sube a GitHub.
+
+| Variable del `.env` | Qué es | De dónde sale |
+|---|---|---|
+| `PGUSER` | Usuario de PostgreSQL | Lo elige quien instala; el ejemplo trae `solarbi` |
+| `PGPASSWORD` | Contraseña de ese usuario | La inventa quien instala; no hay una por defecto |
+| `PGDATABASE` | Nombre de la base | El ejemplo trae `solarbi` |
+| `PGHOST` y `PGPORT` | Dónde corre PostgreSQL | `localhost` y `5433` (puerto del contenedor publicado en el equipo) |
+
+Quién usa esos valores:
+
+- **Docker Compose** crea el usuario y la base de PostgreSQL con ellos, la primera vez que arranca.
+- **El ETL** (`etl/run_etl.py`) los lee con `python-dotenv` para conectarse.
+- **Grafana** los recibe como variables de entorno y los usa en el data source provisionado.
+- **Power BI** no lee el `.env`: hay que escribir `PGUSER` y `PGPASSWORD` a mano en el cuadro de
+  credenciales de la pestaña "Base de datos".
+
+PostgreSQL solo aplica el usuario y la contraseña cuando crea el volumen `pgdata` por primera vez. Si
+después se cambia `PGPASSWORD` en el `.env`, la base seguirá con la contraseña anterior. Para
+empezar de cero, `docker compose down -v` borra los volúmenes (incluidos los datos y los ajustes
+de Grafana); luego `docker compose up -d` y `python etl/run_etl.py` los vuelven a crear.
+
+Grafana OSS tiene su propio usuario, independiente de PostgreSQL: en una instalación nueva es `admin`
+con contraseña `admin`, y Grafana pide cambiarla en el primer ingreso.
 
 ## Reglas de calidad (Bronze → Silver)
 
